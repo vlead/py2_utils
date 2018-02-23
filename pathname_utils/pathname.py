@@ -26,14 +26,6 @@ def to_dirname(p):
     else:
         return p
 
-# Strip trailing separator, if any, from pathname p 
-
-def to_non_dirname(p):
-    if is_dirname(p):
-        return p[0:-1]
-    else:
-        return p
-    
 # Get leaf of pathname
 def leafname(p):
     # normpath removes the trailing separator, if any
