@@ -13,8 +13,8 @@ class GitPullTask(Task):
     def __init__(self, wd, repo,  **args):
         self.wd = wd
         self.repo = repo
-        super(GitPullTask, self).__init__(**args)
-        
+        super(GitPullTask, self).__init__(**args) 
+       
     # pre:
     # repo looks like a git repo
     # wd is an existing git workspace,
@@ -25,7 +25,7 @@ class GitPullTask(Task):
 
     def action(self):
         self.status = "bot"
-        cmd = format("cd %s; git pull" %self.wd)
+        cmd = format("cd %s; git pull" % self.wd)
         self.cmd = cmd
         if self.run == "wet":
             os.system(cmd)

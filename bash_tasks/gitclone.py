@@ -10,7 +10,7 @@ from py_utils.pathname_utils.pathname import *
 from urlparse import urlparse
 
 class GitCloneTask(Task):
-    def __init__(self, wd, repo, branch=None, cmd="", run="dry", ws=None, **args):
+    def __init__(self, wd, repo, branch=None, cmd="", run="wet", ws=None, **args):
         self.wd = wd
         self.repo = repo
         self.ws = ws
