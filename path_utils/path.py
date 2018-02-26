@@ -98,7 +98,7 @@ def trunk(p):
 # is path a tar.gz name?
 # is_targz: path -> bool
 # -----------------------
-def is_targz(p):
+def is_tar_gz(p):
     return p.endwith(".tar.gz")
 
 # is_tgz_name: path -> bool
@@ -143,6 +143,13 @@ def exists_path(p):
 # ---------------------------
 def is_git_ws(p):
     return os.path.isdir(os.path.join(p, '.git'))
+
+# extension: path -> str
+def extension(p):
+    return os.path.splitext(p)[1]
+
+
+    
 
 
 

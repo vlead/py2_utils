@@ -6,6 +6,7 @@
 # -------------------------
 
 import os
+import sys
 from urlparse import urlparse
 from path_utils.path import *
 from type_utils.check import *
@@ -38,7 +39,7 @@ def pull_repo(wd, ws):
 # pulls if it does
 def install_repo(wd, repo, ws=None):
     if ws == None:
-        ws_name = leafname(os.path.splitext(urlparse(repo).path)[0])
+        ws_name = leaf(os.path.splitext(urlparse(repo).path)[0])
     else:
         ws_name = ws
     if (os.path.isdir(os.path.join(wd, ws_name))):
@@ -109,6 +110,10 @@ def untar_targz(wd, p):
     return ans
     
 def install_targz(wd, url):
+    fn = leaf(urlparse(url).path).split('.')[0]
+    if os.path.exists(os.path.join(wd, fn)):
+        print "untarred file %s already exists" % fn
+        return fn
     p = wget(wd, url)
     return untar_targz(wd, p)
 
@@ -116,4 +121,42 @@ def install_targz(wd, url):
 def del_path(fn):
     s = "rm -rf %s" % fn
     os.system(s)
-    
+
+
+
+# reads a file as a module and returns it.
+import importlib
+
+def import_file(p):
+    check_url_file(p)
+    check(lambda p: extension(p) == ".py", "Path %s does not have .py extenion")(p)
+    (trunk, leaf) = os.path.split(p)
+    mod_name = os.path.splitext(leaf)[0]
+    sys.path.append(trunk)
+    m = importlib.import_module(mod_name)
+    return m
+
+
+# p: path referring to emacs executable
+def emacs_ver(p):
+    full_ver_str = run_cmd(format("%s --version  | head -1 " \
+                                   % p)).rsplit()[2]
+    print "emacs version: %s" % full_ver_str
+    ver_num = int(full_ver_str.rsplit('.')[0])
+    return ver_num
+
+
+
+
+task_funs_catalog =  {"clone_repo": clone_repo, \
+                       "pull_repo": pull_repo, \
+                       "install_repo": install_repo, \
+                       "sym_link": sym_link, \
+                       "wget": wget, \
+                       "untar_targz": untar_targz, \
+                       "install_targz": install_targz \
+}
+                       
+
+
+

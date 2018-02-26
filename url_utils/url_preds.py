@@ -13,18 +13,18 @@ def is_url(pred):
         return pred(a)
     return f
 
-def is_urlparse_pathname(a):
+def is_urlparse_path(a):
     return a.scheme in ['file', ''] \
         and a.netloc == '' and a.params == '' \
         and a.params == '' and a.query == '' \
-        and a.fragment == ''
+        and a.fragment == '' and a.path != ''
 
 # a is the result of parsing a url
 
 # is_url_http: str -> boolean
 
 is_url_http = is_url(lambda a: a.scheme in ["https", "http"])
-is_url_pathname = is_url(is_urlparse_pathname)
+is_url_path = is_url(is_urlparse_path)
 
 # Git Repository names
 # --------------------
@@ -46,24 +46,24 @@ is_http_tar_gz = lambda s: is_url_http(s) and is_url_tar_gz(s)
 is_http_tgz = lambda s: is_url_http(s) and is_url_tgz(s)
 is_http_targz  = lambda s: is_http_tar_gz(s) or is_http_tgz(s)
 
-is_url_fs_path = lambda s: is_url_pathname(s) \
+is_url_fs_path = lambda s: is_url_path(s) \
                  and  os.path.exists(urlparse(s).path)
 
-is_url_dir = lambda s: is_url_pathname(s) \
+is_url_dir = lambda s: is_url_path(s) \
               and  os.path.isdir(urlparse(s).path)
 
-is_url_file = lambda s: is_url_pathname(s) \
-              and  os.path.file(urlparse(s).path)
+is_url_file = lambda s: is_url_path(s) \
+              and  os.path.isfile(urlparse(s).path)
 
-is_url_git_ws = lambda s: is_url_pathname(s) \
+is_url_git_ws = lambda s: is_url_path(s) \
                 and  os.path.isdir(os.path.join(urlparse(s).path, '.git'))
 
 # Is the given string a git repository?
-
 check_url_http = check(is_url_http, "invalid http resource name: %s")
+check_url_path = check(is_url_path, "invalid path: %s")
 check_url_git_bare = check(is_url_git_bare, "invalid git resource name: %s")
 check_url_http_git_bare = check(is_url_http_git_bare, "invalid git resource name: %s")
-check_filename = check(is_url_pathname, "invalid filename: %s")
+check_filename = check(is_url_path, "invalid filename: %s")
 check_url_tar_gz = check(is_url_tar_gz, "invalid tar.gz filename: %s")
 check_url_tgz = check(is_url_tgz, "invalid .tgz filename: %s")
 check_url_targz = check(is_url_targz, "invalid .tgz or .tar.gz filename: %s")

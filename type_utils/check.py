@@ -13,7 +13,7 @@
 # E.g,,
 # q = check(lambda y: y > 0, "Type Error: %s not > 0")
 # q(-3)
-
+# check: [t -> bool, str] -> t -> t + TypeErr
 def check(pred, msg):
     def f(arg):
         if (pred(arg)):
