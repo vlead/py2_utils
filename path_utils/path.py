@@ -5,7 +5,7 @@
 # Additional Path utilities
 # -------------------------
 import os.path
-from sh import sh
+from sh_utils.run_cmd import run_cmd
 from urlparse import urlparse
 
 # a path is a string that
@@ -25,15 +25,42 @@ def is_path(x):
         and a.params == '' and a.query == '' \
         and a.fragment == ''
 
+# splits a path into its components
+def components(p):
+    return p.rsplit(os.sep)
+
+# conjecture:
+# -----------
+# for all paths p:
+#  os.path.join(*components(p)) == p
+
+def is_normpath(p):
+    lc = components(p)
+    return '..' in lc or '.' in lc
+
+# conjecture
+# ----------
+# for all paths p:
+# is_normpath(os.path.normpath(p)) == True
+
+
+
+    
+# a component of a
+# "a/b/c"
+# ".." and "." are not atoms
+# they are operators.
+
+    
 # is_dirpath: path -> bool
 # ------------------------
-def is_dirpath(pn):
-    return pn == os.sep \
-        or pn == '.' \
-        or pn == '..' \
-        or pn[-1] == os.sep \
-        or pn[-2:] == os.sep + '.' \
-        or pn[-3:] == os.sep + '..'
+def is_dirpath(p):
+    return p == os.sep \
+        or p == '.' \
+        or p == '..' \
+        or p[-1] == os.sep \
+        or p[-2:] == os.sep + '.' \
+        or p[-3:] == os.sep + '..'
 
 # to_dirpath: path -> dirpath
 # ---------------------------
@@ -54,11 +81,11 @@ def is_leaf(p):
 
 # returns the unix basename of path p
 def unix_basename(p):
-    return sh("basename %s" % p)
+    return run_cmd("basename %s" % p)
 
 # returns the unix dirname of path p
 def unix_dirname(p):
-    return sh("dirname %s" % p)
+    return run_cmd("dirname %s" % p)
 
 # leaf: path -> leaf
 def leaf(p):
@@ -78,6 +105,17 @@ def is_targz(p):
 # -------------------------
 def is_tgz(p):
     return p.endwith(".tgz")
+
+def is_targz(p):
+    return is_tar_gz(p) or is_tgz(p)
+
+# pathname without any extensions
+# sans_exts("a/b/c.d.e") = "a/b/c"
+
+# sans_exts : leaf -> 
+def sans_exts(p):
+    q = os.path.abspath(p)
+    q.split('.')[0]
 
 # Predicates for paths and paths of different types
 # --------------------------------------------------
