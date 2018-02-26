@@ -2,4 +2,4 @@
 # Author:  Venkatesh Choppella <venkatesh.choppell@iiit.ac.in>
 # Licence: GPL v3.0
 
-print "package pathname_utils"
+print "package path_utils"
