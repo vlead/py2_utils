@@ -32,6 +32,7 @@ def pull_repo(wd, ws):
     s = format("cd %s; cd %s; git pull" % (wd, ws))
     print s
     os.system(s)
+    return os.path.join(wd, ws)
 
 # install repo
 # ------------
@@ -42,12 +43,14 @@ def install_repo(wd, repo, ws=None):
         ws_name = leaf(os.path.splitext(urlparse(repo).path)[0])
     else:
         ws_name = ws
-    if (os.path.isdir(os.path.join(wd, ws_name))):
+    ans = os.path.join(wd, ws_name)
+    if (os.path.isdir(ans)):
         print "%s is already installed" % ws_name
         pull_repo(wd, ws_name)
     else:
-        print "%s doesn't exist: cloning it ..." % ws
+        print "%s doesn't exist: cloning it ..." % ws_name
         clone_repo(wd, repo, ws_name)
+    return ans
 
 # sym_link
 # --------
@@ -57,8 +60,7 @@ def sym_link(wd, target, link=""):
           "error: directory does not exist: %s")(wd)
     
     check(os.path.exists, \
-          "error: symlink target does not exist: %s") \
-          (os.path.join(wd, target))
+          "error: symlink target does not exist: %s")(target)
 
     
     r = os.path.relpath(target, wd)
@@ -70,6 +72,7 @@ def sym_link(wd, target, link=""):
         % (wd, link, r)
     print(s)
     os.system(s)
+    return os.path.join(wd, leaf(r))
 
 # cd's to wd.
 # wgets the http_url.
@@ -79,6 +82,7 @@ def wget(wd, url):
     check_url_fs_path(wd)
     check_url_http(url)
     s = format("cd %s; wget %s" % (wd, url))
+    print s
     os.system(s)
     return leaf(urlparse(url).path)
 
@@ -103,19 +107,27 @@ def untar_targz(wd, p):
     s = format("cd %s; tar -xzvf %s" % (wd, p))
     print s
     os.system(s)
-    # p   = /a/b/foo.tar.gz
+    # p   = foo.tar.gz
     # ans = foo
     ans = leaf(p).split('.')[0]
     print "cd_d to  %s, and untarred to %s " % (wd, ans)
-    return ans
-    
+    return os.path.abspath(ans)
+
+# wd is the working directory
+# url the is a url of a targz file
+# 
 def install_targz(wd, url):
-    fn = leaf(urlparse(url).path).split('.')[0]
-    if os.path.exists(os.path.join(wd, fn)):
-        print "untarred file %s already exists" % fn
-        return fn
-    p = wget(wd, url)
-    return untar_targz(wd, p)
+    fn = leaf(urlparse(url).path)
+    fqtf = os.path.join(os.path.abspath(wd), fn)
+    print "tar file name = %s" % fqtf
+    if os.path.exists(fqtf):
+        print "untarred file %s already exists" % fqtf
+        return fqtf
+    else:
+        print "need to wget ..."
+        p = wget(wd, url)
+        return untar_targz(wd, p)
+    
 
     
 def del_path(fn):
