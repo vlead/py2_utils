@@ -41,7 +41,7 @@ class TestPathName(TestCase):
 
 
     def test_to_dirpath(self):
-        print "test_to_dirpath"        
+        print "test_to_dirpath"
         self.assertEqual(to_dirpath('/'), '/')
         self.assertEqual(to_dirpath('.'), './')
         self.assertEqual(to_dirpath('..'), '../')
@@ -59,12 +59,53 @@ class TestPathName(TestCase):
         self.assertEqual(leaf('/'), '/')
         self.assertEqual(leaf('a.txt'), 'a.txt')
         self.assertEqual(leaf('a/b'), 'b')
-        self.assertEqual(leaf('a/..'), '..')
+        self.assertEqual(leaf('a/..'), '.')
         self.assertEqual(leaf('a/b/'), 'b')
-        self.assertEqual(leaf('a/../'), '..')
-        self.assertEqual(leaf('a/.'), '.')
+        self.assertEqual(leaf('a/../'), '.')
+        self.assertEqual(leaf('a/.'), 'a')
         self.assertEqual(leaf('//'), '/')
-        self.assertEqual(leaf('//./'), '.')
-        self.assertEqual(leaf('//..//'), '..')        
+        self.assertEqual(leaf('//./'), '/')
+        self.assertEqual(leaf('//..//'), '/')        
         
                 
+    def test_sans_exts(self):
+        print "test_sans_exts"        
+        self.assertEqual(sans_exts('a'), 'a')
+        self.assertEqual(sans_exts('a/'), 'a')
+        self.assertEqual(sans_exts('a/.'), 'a')
+        self.assertEqual(sans_exts('a/..'), '.')
+        self.assertEqual(sans_exts('a//'), 'a')
+        self.assertEqual(sans_exts('/'), '/')
+        self.assertEqual(sans_exts('//'), '//')
+        self.assertEqual(sans_exts('.'), '.')
+        self.assertEqual(sans_exts('..'), '..')
+        self.assertEqual(sans_exts('a/././..'), '.')
+
+    def test_leaf_sans_exts(self):
+        print "test_leaf_sans_exts"        
+        self.assertEqual(leaf_sans_exts('a'), 'a')
+        self.assertEqual(leaf_sans_exts('a/'), 'a')
+        self.assertEqual(leaf_sans_exts('a/.'), 'a')
+        self.assertEqual(leaf_sans_exts('a/..'), '.')
+        self.assertEqual(leaf_sans_exts('a//'), 'a')
+        self.assertEqual(leaf_sans_exts('/'), '/')
+        self.assertEqual(leaf_sans_exts('//'), '/')
+        self.assertEqual(leaf_sans_exts('.'), '.')
+        self.assertEqual(leaf_sans_exts('..'), '..')
+        self.assertEqual(leaf_sans_exts('a/././..'), '.')
+        self.assertEqual(leaf_sans_exts('a/b.c/./../e.f.tar.gz'), 'e')
+        self.assertEqual(leaf_sans_exts('a/b.c/./../e.f.tar.gz'), 'e')
+        self.assertEqual(leaf_sans_exts('//'), '/')
+        self.assertEqual(leaf_sans_exts('..'), '..')
+        self.assertEqual(leaf_sans_exts('.'), '.')
+        self.assertEqual(leaf_sans_exts('.a'), '')
+        self.assertEqual(leaf_sans_exts('.a.bc'), '')
+        self.assertEqual(leaf_sans_exts('a.bc'), 'a')
+        self.assertEqual(leaf_sans_exts('a.bc.d'), 'a')
+        self.assertEqual(leaf_sans_exts('a.bc.d'), 'a')
+        self.assertEqual(leaf_sans_exts('...a.bc.d'), '')
+        self.assertEqual(leaf_sans_exts('../a.bc.d'), 'a')
+        self.assertEqual(leaf_sans_exts('../a.bc.d/..'), '..')
+        self.assertEqual(leaf_sans_exts('a.bc.d/..'), '.')
+        self.assertEqual(leaf_sans_exts('.'), '.')
+            

@@ -78,22 +78,21 @@ def is_leaf(p):
     return p == os.sep \
         or not os.sep in p
 
-
-# returns the unix basename of path p
+# returns the unix basename of normalized path p
 def unix_basename(p):
     return run_cmd("basename %s" % p)
 
-# returns the unix dirname of path p
+# returns the unix dirname of normalized path p
 def unix_dirname(p):
     return run_cmd("dirname %s" % p)
 
 # leaf: path -> leaf
 def leaf(p):
-    return unix_basename(p)
+    return unix_basename(os.path.normpath(p))
 
 # trunk: path -> path
 def trunk(p):
-    return unix_dirname(p)
+    return unix_dirname(os.path.normpath(p))
 
 # is path a tar.gz name?
 # is_targz: path -> bool
@@ -114,8 +113,17 @@ def is_targz(p):
 
 # sans_exts : leaf -> 
 def sans_exts(p):
-    q = os.path.abspath(p)
-    q.split('.')[0]
+    q = os.path.normpath(p)
+    if q in  ['.', '..', '/', '//']:
+        return q
+    else:
+        return q.split('.')[0]
+    
+# leaf_san_extns(a/b.c/./e.f.tgz)
+# = e
+# sans_exts : leaf -> 
+def leaf_sans_exts(p):
+    return sans_exts(leaf(p))
 
 # Predicates for paths and paths of different types
 # --------------------------------------------------
