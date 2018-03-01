@@ -67,16 +67,7 @@ class TestShellFuns(TestCase):
         install_targz("/tmp/a", "http://pascal.iiit.ac.in/~choppell/test.tar.gz")
         self.assertTrue(os.path.isdir("/tmp/a/test"))
         os.system("rm -rf /tmp/a")
-                        
-        
 
         
-
-        
-                        
-        
-                   
-        
-
-
-        
+if __name__ == "__main__":
+    unittest.main()
