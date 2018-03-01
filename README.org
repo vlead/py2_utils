@@ -1,0 +1,14 @@
+#+title:  Readme 
+
+
+* Release Notes for v0.2.0
+
+=py2_utils= implements tasks related to paths, urls and
+tasks. 
+
+This version defines =sh_utils/task_funs.py= to define shell
+(system) tasks.  Each function takes arguments and performs
+system commands.  These functions themselves do not use task
+objects.  (That's for a future version).
+
+
