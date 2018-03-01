@@ -1,0 +1,99 @@
+#+TITLE: Task Ontology and Architecture
+
+* Task
+A task spec  is a collection of related parameters.  
+A task object is constructed by instantiating by a subclass
+of =Task=. 
+
+* Task predicate
+A task spec also holds a predicate relating its fields to
+the context (file system, for example).  The predicate may
+used in several ways: For example a task function may decide
+to verify the predicate before executing a task.  Also, a
+task function could return a task spec in which the
+predicate indicates completion of a task.  
+
+* Task Function
+A task function takes one or more tasks and returns a task.
+
+* Task Workflow
+
+A Task workflow is a collection of tasks and task
+functions. 
+
+* System Tasks
+Task spec are of two kinds: jobs and results:
+
+ - Jobs ::  These are tasks waiting to be done.
+ - Results :: These are the reports of tasks done. 
+
+A result object has three primary components:
+
+  - job :: the job whose execution gave this result.
+
+  - fun ::  the wf function that operated on the job
+
+  - status ::  success or failure, waiting, etc.
+
+It may also have other fields depending on the status, these
+other fields contain answers, e.g., err messages in case of
+failure, value fields in case of success, etc.
+
+#+BEGIN_EXAMPLE
+CloneJob
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+t1 = Job(wd, repo, ws, target=git_install)
+a1 = Succ(ws)  | Fail(msg)
+r1 = Result(job = t1, src = git_install, status = "succ", ws = ...)
+
+
+def exec(job):
+   deps = j.deps
+   results = empty
+   for d in deps:
+       r = exec(d)
+	   add(r, results)
+   ts = create new tasks
+   r = j.target(ts)
+   return r
+
+   
+def simple_exec(j):
+    r = j.target(...)
+    return r
+
+	   
+def driver(jobs, results):
+   if empty(jobs):
+       return results
+   else: 
+       j = pick(jobs)
+       deps = j.deps
+       
+       f = j.target
+       r = f(j)
+       add(r, results)
+    
+
+If a job has dependencies:
+ 
+       
+def git_install(j):
+    if (pred(j)):
+	   j1 = Job(..., target=gitClone)
+	   try:
+          r1 = j1.do()
+		  return Result(job=j, src=git_clone, status=succ, wd=...)
+       except e
+          status = fail
+          exn = e
+		  return Result(job=j, src=git_clone, status=fail, err=...)
+    else:
+       j1 = Job(..., target=gitPull)
+	   r1 = j1.do()
+    result = Result(job = j, src = git_clone,  status
+
+#+END_EXAMPLE
+
