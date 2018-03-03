@@ -81,6 +81,20 @@ class TestPathName(TestCase):
         self.assertEqual(sans_exts('..'), '..')
         self.assertEqual(sans_exts('a/././..'), '.')
 
+    def test_is_simple(self):
+        print "test_is_simple"
+        self.assertEqual(is_simple('a'), True)
+        self.assertEqual(is_simple('a/'), False)
+        self.assertEqual(is_simple('a/b'), False)
+        self.assertEqual(is_simple('/'), False)
+        self.assertEqual(is_simple(''), False)
+        self.assertEqual(is_simple('.'), False)
+        self.assertEqual(is_simple('..'), False)
+        self.assertEqual(is_simple('///'), False)
+        self.assertEqual(is_simple('.a'), True)
+        self.assertEqual(is_simple('a.b'), True)
+        self.assertEqual(is_simple('a.b/'), False)
+        
     def test_leaf_sans_exts(self):
         print "test_leaf_sans_exts"        
         self.assertEqual(leaf_sans_exts('a'), 'a')
@@ -108,4 +122,6 @@ class TestPathName(TestCase):
         self.assertEqual(leaf_sans_exts('../a.bc.d/..'), '..')
         self.assertEqual(leaf_sans_exts('a.bc.d/..'), '.')
         self.assertEqual(leaf_sans_exts('.'), '.')
+
+    
             

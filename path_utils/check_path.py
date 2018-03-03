@@ -12,3 +12,4 @@ check_fs_path = check(is_fs_path, "Argument is not a path on the file system: %s
 check_dir=check(os.path.isdir, "Argument is not a directory on the file system: %s")
 check_exists_path = check_fs_path
 check_git_ws = check(is_git_ws, "Argument is not a git work space: %s")
+check_simple = check(is_simple, "Argument is not a simple path: %s")

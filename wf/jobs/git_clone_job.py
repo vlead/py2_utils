@@ -13,36 +13,39 @@ from url_utils.url_fns import *
 
 class GitCloneJob(Job):
     def __init__(self, sender=None, wd=None, repo=None, \
-                 branch=None, ws=None, **args):
+                 branch=None, ws_name=None, **args):
         # 1. wd is a path
         check_path(wd)
         # 2. repo is a git repo
         check_url(repo)
 
-        if ws == None:
-            nws = os.path.join(wd, url_leaf_sans_exts(repo))
+        # 3. ws is either None ...
+        if ws_name == None:
+            ws_name = url_leaf_sans_exts(repo)
+            ws_dir = os.path.join(wd, ws_name)
         else:
-            nws = os.path.join(wd, ws)
-        # 3. nws is a path
-        check_path(nws)
+            # ... or a simple path
+            check_simple(ws_name)
+            ws_dir = os.path.join(wd, ws)
 
         # 4. branch
         if branch == None:
             git_opts = ""
         else:
-            check(lambda a: type(a) is str,
-                  "arg branch is not a string: % s")(branch)
+            check_simple(branch)
             git_opts = "--branch %s --single-branch " % branch
             
         super(GitCloneJob, self).__init__(sender=sender, \
                                           wd=wd, repo=repo, \
-                                          ws=nws, \
+                                          ws_name=ws_name, \
+                                          ws_dir= ws_dir, \
+                                          branch=branch, \
                                           git_opts=git_opts,
                                           **args)
     def __repr__(self):
         return "GitCloneJob(**%s)" % self.args
 
-def GitCloneResult(Result):
+class GitCloneResult(Result):
     def __init__(self, sender=None, job=None, \
                  status=None, **args):
 
@@ -54,13 +57,4 @@ def GitCloneResult(Result):
     def __repr__(self):
         return "GitCloneResult(**%s)" % self.args
     
-        
-    def cond(self):
-        return is_git_ws(self.ws)
 
-    
-        
-        
-        
-
-    

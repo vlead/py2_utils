@@ -35,16 +35,15 @@ def components(p):
 #  os.path.join(*components(p)) == p
 
 def is_normpath(p):
-    lc = components(p)
-    return '..' in lc or '.' in lc
+    return p == os.path.normpath(p)
 
-# conjecture
-# ----------
-# for all paths p:
-# is_normpath(os.path.normpath(p)) == True
-
-
-
+# A path is simple if
+# it is a normal path of size one and not equal 
+# to any of the constant singleton paths.
+def is_simple(p):
+    return is_normpath(p) \
+        and len(components(p)) == 1 \
+        and p not in ['/', '//', '.', '..']
     
 # a component of a
 # "a/b/c"
