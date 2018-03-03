@@ -1,31 +1,31 @@
-#+TITLE: Task Ontology and Architecture
+#+TITLE: Jobs, results and workflows
 
-* Task
-A task spec  is a collection of related parameters.  
-A task object is constructed by instantiating by a subclass
-of =Task=. 
+* Job
+A job  is a collection of related parameters.  
+A job object is constructed by instantiating by a subclass
+of =Job=. 
 
-* Task predicate
-A task spec also holds a predicate relating its fields to
-the context (file system, for example).  The predicate may
-used in several ways: For example a task function may decide
-to verify the predicate before executing a task.  Also, a
-task function could return a task spec in which the
-predicate indicates completion of a task.  
+* Job Function
+A job function takes a job and returns a result, or raises
+an =ResultException= wrapped around a result.   A job
+function is implemented as a class with three methods
+(described later):
 
-* Task Function
-A task function takes one or more tasks and returns a task.
+ - =is_valid= :: takes a job and checks if the job is valid
+                 for the job function.
 
-* Task Workflow
+ - =is_ready= :: takes a job valid for the function and
+                 inquires whether the job is ready to be
+                 acted upon
 
-A Task workflow is a collection of tasks and task
-functions. 
+ - =do= :: take a ready job and acts on the job to produce a
+           result or a =ResultException=. 
 
-* System Tasks
-Task spec are of two kinds: jobs and results:
 
- - Jobs ::  These are tasks waiting to be done.
- - Results :: These are the reports of tasks done. 
+* Result
+A result is a collection of related attributes and their
+values.  It is obtained as a result of applying a job
+function to a job.
 
 A result object has three primary components:
 
@@ -38,6 +38,11 @@ A result object has three primary components:
 It may also have other fields depending on the status, these
 other fields contain answers, e.g., err messages in case of
 failure, value fields in case of success, etc.
+
+* Job Workflow
+
+A Job workflow is a collection of jobs and a sequence of job
+functions working on them. 
 
 #+BEGIN_EXAMPLE
 CloneJob

@@ -6,31 +6,36 @@ import os
 from urlparse import urlparse
 from type_utils.check import *
 
-# pred is a predicate on a urlparse structure
-def is_url(pred):
-    def f(s):
+
+# is_url: any -> False + url_parse structure
+def is_url(s):
+    try:
         a = urlparse(s)
+        return True
+    except:
+        return False
+
+# pred is a predicate on a urlparse structure
+def is_url_pred(pred):
+    def f(s):
+        try:
+            a = urlparse(s)
+        except:
+            return False
         return pred(a)
     return f
 
-def is_urlparse_path(a):
-    return a.scheme in ['file', ''] \
-        and a.netloc == '' and a.params == '' \
-        and a.params == '' and a.query == '' \
-        and a.fragment == '' and a.path != ''
-
-# a is the result of parsing a url
-
-# is_url_http: str -> boolean
-
-is_url_http = is_url(lambda a: a.scheme in ["https", "http"])
-is_url_path = is_url(is_urlparse_path)
+is_url_http = is_url_pred(lambda a: a.scheme in ["https", "http"])
+is_url_path = is_url_pred(lambda a: \
+                               a.scheme in ['file', ''] \
+                               and a.netloc == '' and a.params == '' \
+                               and a.params == '' and a.query == '' \
+                               and a.fragment == '' and a.path != '')
 
 # Git Repository names
 # --------------------
-
 # A bare git repository is any path ending with '.git'
-is_url_git_bare = is_url(lambda a: os.path.splitext(a.path)[1] == ".git")
+is_url_git_bare = is_url_pred(lambda a: os.path.splitext(a.path)[1] == ".git")
 
 # A git http bare git repository is any
 # - http url
@@ -38,8 +43,8 @@ is_url_git_bare = is_url(lambda a: os.path.splitext(a.path)[1] == ".git")
 is_url_http_git_bare = lambda s: is_url_http(s) and is_url_git_bare(s)
 
 
-is_url_tar_gz   = is_url(lambda a: a.path.endswith(".tar.gz"))
-is_url_tgz   = is_url(lambda a: a.path.endswith(".tgz"))
+is_url_tar_gz   = is_url_pred(lambda a: a.path.endswith(".tar.gz"))
+is_url_tgz   = is_url_pred(lambda a: a.path.endswith(".tgz"))
 is_url_targz   = lambda s: is_url_tar_gz(s) or is_url_tgz(s)
 
 is_http_tar_gz = lambda s: is_url_http(s) and is_url_tar_gz(s)
@@ -58,7 +63,8 @@ is_url_file = lambda s: is_url_path(s) \
 is_url_git_ws = lambda s: is_url_path(s) \
                 and  os.path.isdir(os.path.join(urlparse(s).path, '.git'))
 
-# Is the given string a git repository?
+
+check_url =  check(is_url, "invalid url: %s")
 check_url_http = check(is_url_http, "invalid http resource name: %s")
 check_url_path = check(is_url_path, "invalid path: %s")
 check_url_git_bare = check(is_url_git_bare, "invalid git resource name: %s")
