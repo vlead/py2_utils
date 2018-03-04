@@ -45,16 +45,5 @@ class GitInstallJob(Job):
     def __repr__(self):
         return "GitInstallJob(**%s)" % self.args
 
-class GitInstallResult(Result):
-    def __init__(self, sender=None, job=None, \
-                 status=None, **args):
-
-        super(GitInstallResult, self).__init__(sender=sender,\
-                                             job=job,\
-                                             status=status,\
-                                             **args)
-        
-    def __repr__(self):
-        return "GitInstallResult(**%s)" % self.args
     
 

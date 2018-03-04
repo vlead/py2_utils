@@ -18,11 +18,9 @@ def check_do(cls, job, s, **args):
         print s
         ans = run_cmd(s)
         print "ans =  %s" % ans
-        r = Result(sender=cls, job=job, \
+        return Result(sender=cls, job=job, \
                    status="succ", cmd=s, output=ans, \
                    **args)
-        print "GitCloneFun.do ... succ" 
-        return r
     except Exception as e:
         print "exception:  %s " % e
         r = Result(sender=cls, job=job, status="fail", \

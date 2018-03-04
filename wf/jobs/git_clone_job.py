@@ -45,16 +45,4 @@ class GitCloneJob(Job):
     def __repr__(self):
         return "GitCloneJob(**%s)" % self.args
 
-class GitCloneResult(Result):
-    def __init__(self, sender=None, job=None, \
-                 status=None, **args):
-
-        super(GitCloneResult, self).__init__(sender=sender,\
-                                             job=job,\
-                                             status=status,\
-                                             **args)
-        
-    def __repr__(self):
-        return "GitCloneResult(**%s)" % self.args
-    
 

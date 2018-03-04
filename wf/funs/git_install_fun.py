@@ -27,14 +27,13 @@ class GitInstallFun:
         check_pre(GitInstallFun, job)
 
         if GitCloneFun.pre(job):
-            r1 = GitCloneFun.do(job)
+            return GitCloneFun.do(job)
         else:
             print "already cloned, pulling ..."
             nj = GitPullJob(sender=job.sender, \
                             wd=os.path.join(job.wd, job.ws_name))
-            r1 = GitPullFun.do(nj)
-            
-        return GitInstallResult(**r1.args)
+            return GitPullFun.do(nj)
+
         
     # post: r -> Bool    
     @staticmethod        

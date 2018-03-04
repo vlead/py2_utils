@@ -14,29 +14,3 @@ class  GitPullJob(Job):
         return "GitPullJob(**%s)" % self.args
 
 
-class GitPullResult(Result):
-    def __init__(self, sender=None, job=None, \
-                 status=None, **args):
-
-        super(GitPullResult, self).__init__(sender=sender,\
-                                             job=job,\
-                                             status=status,\
-                                             **args)
-        
-    def __repr__(self):
-        return "GitPullResult(**%s)" % self.args
-    
-
-    
-        
-        
-
-        
-        
-        
-    
-        
-        
-        
-
-    
