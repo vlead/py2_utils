@@ -18,11 +18,11 @@ class TestTargzInstall(TestCase):
     name = "test"
     test_dir = os.path.join(wd, name)
     
-    def test_clone(self):
+    def test_targz_install(self):
         print "test_targz_install"
 
         os.system("mkdir -p %s" % wd)
-#        os.system("rm -rf %s" % test_dir)
+        os.system("rm -rf %s" % test_dir)
         
         j1 = TargzInstallJob(wd=wd, url=url)
 

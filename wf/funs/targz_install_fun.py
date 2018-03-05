@@ -34,11 +34,11 @@ class TargzInstallFun:
             s =format("cd %s; wget %s" % (job.wd, job.url))
             r = run_job_cmd(TargzInstallFun, job, \
                             s, ws_dir=job.ws_dir)
-            check_post(TargzInstallFun, r)
             #untar
             s=format("cd %s; tar -xzvf %s" % (job.wd, job.ws_targz))
             r = run_job_cmd(TargzInstallFun, job, s, \
                             ws_dir=job.ws_dir)
+            check_post(TargzInstallFun, r)
             return r
 
     # post: r -> Bool    

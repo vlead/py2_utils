@@ -1,5 +1,4 @@
-from wf.jobs.job import Result
-from wf.jobs.job import WfExn
+from wf.jobs.job import *
 
 from sh_utils.run_cmd import run_cmd
 

@@ -33,10 +33,13 @@ class Result(Rec):
 
 
 class WfExn(Exception):
-    def __init__(self, sender=None, **args):
+    def __init__(self, message="Workflow Exception", **args):
         self.args = args
         for i in args.keys():
             self.__dict__[i] = args[i]
+
+        super(WfExn, self).__init__("Workflow Exception")
+        
 
     def __repr__(self):
         return "WfExn(**%s)" % self.args
@@ -46,7 +49,8 @@ class WfExn(Exception):
         
 class JobIllFormed(WfExn):
     def __init__(self, sender=None, job=None, **args):
-        super(JobIsInadmissible, self).__init__(**args)
+        super(JobIsInadmissible, self).__init__(sender=sender, \
+                                                job=job, **args)
             
     def __repr__(self):
         return "JobIllFormed(**%s)" % self.args
@@ -54,21 +58,24 @@ class JobIllFormed(WfExn):
 
 class JobNotReady(WfExn):
     def __init__(self, sender=None, job=None, **args):
-        super(JobNotReady, self).__init__(**args)
+        super(JobNotReady, self).__init__(sender=sender, \
+                                          job=job, **args)
             
     def __repr__(self):
         return "JobNotReady(**%s)" % self.args
     
 class CmdFailed(WfExn):
     def __init__(self, sender=None, job=None, **args):
-        super(CmdFailed, self).__init__(**args)
+        super(CmdFailed, self).__init__(sender=sender, \
+                                        job=job, **args)
             
     def __repr__(self):
         return "CmdFailed(**%s)" % self.args
     
 class ResultPostFailed(WfExn):
     def __init__(self, sender=None, result=None, **args):
-        super(JobNotReady, self).__init__(**args)
+        super(ResultPostFailed, self).__init__(sender=sender, \
+                                               result=result, **args)
             
     def __repr__(self):
         return "ResultPostFailed(**%s)" % self.args

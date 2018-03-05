@@ -15,7 +15,7 @@ class TestUrlPreds(TestCase):
         self.assertEqual(is_url_http("http://vlabs.ac.in/exp/01"), True)
         self.assertEqual(is_url_http("vlabs.ac.in/exp/01"), False)
         self.assertEqual(is_url_git_bare("http://vlabs.ac.in/bar/foo.git"), True)     
-        self.assertEqual(is_url_pathname("vlabs.ac.in/exp/01"), True)
+        self.assertEqual(is_url_path("vlabs.ac.in/exp/01"), True)
         self.assertEqual(is_url_tar_gz("foo.bar/f.tar.gz"), True)
         self.assertEqual(is_url_fs_path("/bin/cat"), True)
 
@@ -23,8 +23,3 @@ class TestUrlPreds(TestCase):
 if __name__ == '__main__':
     unittest.main()
 
-##        self.assertEqual(is_git_repo("vlabs.ac.in/foo.git"), True)
-
-##        self.assertEqual(is_tar_gz("http://foo.bar/f.tar.gz"), True)
-##      self.assertEqual(is_wget_tar_gz("http://foo.bar/f.tar.gz"), True)    
-##        self.assertEqual(is_existing_dir("./"), True)
