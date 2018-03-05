@@ -33,13 +33,13 @@ class GitCloneFun:
         s = format("cd %s; git clone %s %s %s" \
                    % (job.wd, job.git_opts, job.repo, job.ws_name))
         
-        return check_do(GitCloneFun, job, s, ws_dir=job.ws_dir)
+        return run_job_cmd(GitCloneFun, job, s, ws_dir=job.ws_dir)
 
 
     # post: r -> Bool    
     @staticmethod        
     def post(r):
-        return r.status == "succ" and is_git_ws(r.ws_dir)
+        return is_git_ws(r.ws_dir)
 
 
     

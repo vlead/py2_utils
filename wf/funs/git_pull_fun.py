@@ -30,13 +30,13 @@ class GitPullFun():
         check_pre(GitPullFun, job)
         s = format("cd %s; git pull %s " \
                    % (job.wd, job.git_opts))
-        return check_do(GitPullFun, job, s, ws_dir=job.wd)
+        return run_job_cmd(GitPullFun, job, s, ws_dir=job.wd)
 
 
     # post: r -> Bool    
     @staticmethod        
     def post(r):
-        return r.status == "succ"  and is_git_ws(r.ws_dir)
+        return is_git_ws(r.ws_dir)
 
     
 

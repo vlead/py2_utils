@@ -39,7 +39,7 @@ class GitInstallFun:
     @staticmethod        
     def post(r):
         print "running GitInstallFun.post on result %s ..." % r        
-        return r.status == "succ" and is_git_ws(r.ws_dir)
+        return is_git_ws(r.ws_dir)
 
     
 

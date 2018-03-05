@@ -39,7 +39,7 @@ class SymLinkFun():
         rp = os.path.relpath(dest_abspath, wd_abspath)
         s = "cd %s; ln -sf %s %s" % (wd_abspath, rp, job.link)
         print "s = %s" % s  
-        return check_do(SymLinkFun, job, s, rpath=rp)
+        return run_job_cmd(SymLinkFun, job, s, rpath=rp)
 
     # post: r -> Bool    
     @staticmethod        
