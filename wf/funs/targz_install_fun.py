@@ -31,7 +31,9 @@ class TargzInstallFun:
             return Result(sender=TargzInstallFun, job=job, ws_dir=job.ws_dir)
         else:
             #wget
-            s =format("cd %s; wget %s" % (job.wd, job.url))
+            s =format("cd %s; export http_proxy=%s; export
+            https_proxy=%s, wget %s" \
+                      % (job.wd, job.http_proxy, job.https_proxy, job.url))
             r = run_job_cmd(TargzInstallFun, job, \
                             s, ws_dir=job.ws_dir)
             #untar

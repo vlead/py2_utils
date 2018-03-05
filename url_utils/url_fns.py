@@ -22,6 +22,17 @@ def url_leaf(url):
     return leaf(p)
 
 # for posix systems
+# org-8.2.10.tar.gz => org
 def url_leaf_sans_exts(url):
     p = url_leaf(url)
     return sans_exts(p)
+
+def strip_exts(p, le):
+    for e in le:
+        if p.endswith(e):
+            return p.rstrip(e)
+    return p
+            
+def url_strip_targz(url):
+    p = url_leaf(url)
+    return strip_exts(p, ['.tar.gz', '.tgz', '.tar'])

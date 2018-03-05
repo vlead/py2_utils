@@ -19,6 +19,8 @@ class TestUrlPreds(TestCase):
         self.assertEqual(is_url_tar_gz("foo.bar/f.tar.gz"), True)
         self.assertEqual(is_url_fs_path("/bin/cat"), True)
 
+        
+
 
 if __name__ == '__main__':
     unittest.main()
