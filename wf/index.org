@@ -7,11 +7,11 @@ of =Job=.
 
 * Job Function
 A job function takes a job and returns a result, or raises
-an =ResultException= wrapped around a result.   A job
+an =WfExn= wrapped around a result.   A job
 function is implemented as a class with three methods
 (described later):
 
- - =is_valid= :: takes a job and checks if the job is valid
+ - =is_admissible= :: takes a job and checks if the job is valid
                  for the job function.
 
  - =is_ready= :: takes a job valid for the function and
@@ -33,72 +33,10 @@ A result object has three primary components:
 
   - fun ::  the wf function that operated on the job
 
-  - status ::  success or failure, waiting, etc.
-
-It may also have other fields depending on the status, these
-other fields contain answers, e.g., err messages in case of
-failure, value fields in case of success, etc.
+It may also have other fields.
 
 * Job Workflow
 
 A Job workflow is a collection of jobs and a sequence of job
 functions working on them. 
-
-#+BEGIN_EXAMPLE
-CloneJob
-#+END_EXAMPLE
-
-#+BEGIN_EXAMPLE
-t1 = Job(wd, repo, ws, target=git_install)
-a1 = Succ(ws)  | Fail(msg)
-r1 = Result(job = t1, src = git_install, status = "succ", ws = ...)
-
-
-def exec(job):
-   deps = j.deps
-   results = empty
-   for d in deps:
-       r = exec(d)
-	   add(r, results)
-   ts = create new tasks
-   r = j.target(ts)
-   return r
-
-   
-def simple_exec(j):
-    r = j.target(...)
-    return r
-
-	   
-def driver(jobs, results):
-   if empty(jobs):
-       return results
-   else: 
-       j = pick(jobs)
-       deps = j.deps
-       
-       f = j.target
-       r = f(j)
-       add(r, results)
-    
-
-If a job has dependencies:
- 
-       
-def git_install(j):
-    if (pred(j)):
-	   j1 = Job(..., target=gitClone)
-	   try:
-          r1 = j1.do()
-		  return Result(job=j, src=git_clone, status=succ, wd=...)
-       except e
-          status = fail
-          exn = e
-		  return Result(job=j, src=git_clone, status=fail, err=...)
-    else:
-       j1 = Job(..., target=gitPull)
-	   r1 = j1.do()
-    result = Result(job = j, src = git_clone,  status
-
-#+END_EXAMPLE
 

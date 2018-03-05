@@ -1,6 +1,32 @@
 #+title:  Readme 
 
 
+* Release Notes for v1.0.0
+
+=py2_utils= implements utilities for paths, urls, types, and
+now workflows:
+
+ - =path_utils= :: various functions, predicates, and checks
+                   on paths. 
+
+ - =sh_utils= :: various shell based tasks.
+
+ - =type_utils= :: Various definitions of Types and Checks
+
+ - =url_utils= :: Predicates and checks on urls
+
+ - =wf= :: Workflow system based on jobs and task functions (funs)
+
+
+
+ 
+
+
+
+
+
+
+
 * Release Notes for v0.2.0
 
 =py2_utils= implements tasks related to paths, urls and
