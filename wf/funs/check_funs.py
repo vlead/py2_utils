@@ -1,31 +1,40 @@
 from wf.jobs.job import Result
-from wf.jobs.job import ResultException
+from wf.jobs.job import WfExn
 
 from sh_utils.run_cmd import run_cmd
 
 def check_admissible(cls, job):
-    if not cls.is_admissible(job):
-        raise Result(sender=cls, job=job, status='fail', \
-                     err=format("job not admissible: %s" % job))
+    b = cls.is_admissible(job)
+    if not b:
+        raise JobIllFormed(sender=cls, job=job)
+    else:
+        return job
 
 def check_pre(cls, job):
-    if not cls.pre(job):
-        raise Result(sender=cls, job=job, status='fail', \
-                     err=format("job not ready: %s" % job))
+    b = cls.pre(job)
+    if not b:
+        raise JobNotReady(sender=cls, job=job)
+    else:
+        return job
 
-def check_do(cls, job, s, **args):
+
+def check_post(cls, res):
+    b = cls.post(res)
+    if not b:
+        raise ResultPostFailed(sender=cls, result=res)
+    else:
+        return res
+
+def run_job_cmd(cls, job, s, **args):
     try:
         print s
         ans = run_cmd(s)
         print "ans =  %s" % ans
         return Result(sender=cls, job=job, \
-                   status="succ", cmd=s, output=ans, \
+                   cmd=s, output=ans, \
                    **args)
     except Exception as e:
-        print "exception:  %s " % e
-        r = Result(sender=cls, job=job, status="fail", \
-                   cmd=s, err=format("system exception: %s" % e), \
-                   exn=e)
-        raise ResultException(r)
+        raise CmdFailed(sender=cls, job=job,  \
+                   cmd=s, exn=e, **args)
 
 

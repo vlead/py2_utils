@@ -21,8 +21,6 @@ class Job(Rec):
     def __repr__(self):
         return "Job(**%s)" % self.args
 
-    def cond(self):
-        raise Exception("Undefined condition")
 
 
 class Result(Rec):
@@ -34,16 +32,47 @@ class Result(Rec):
         return "Result(**%s)" % self.args
 
 
-    def cond(self):
-        raise Exception("Undefined condition")
+class WfExn(Exception):
+    def __init__(self, sender=None, **args):
+        self.args = args
+        for i in args.keys():
+            self.__dict__[i] = args[i]
 
-class ResultException(Exception):
-    def __init__(self, result):
-        self.result = result
+    def __repr__(self):
+        return "WfExn(**%s)" % self.args
+
+    def __str__(self):
+        return self.__repr__()
         
+class JobIllFormed(WfExn):
+    def __init__(self, sender=None, job=None, **args):
+        super(JobIsInadmissible, self).__init__(**args)
+            
+    def __repr__(self):
+        return "JobIllFormed(**%s)" % self.args
+    
 
-def top():
-    pass
+class JobNotReady(WfExn):
+    def __init__(self, sender=None, job=None, **args):
+        super(JobNotReady, self).__init__(**args)
+            
+    def __repr__(self):
+        return "JobNotReady(**%s)" % self.args
+    
+class CmdFailed(WfExn):
+    def __init__(self, sender=None, job=None, **args):
+        super(CmdFailed, self).__init__(**args)
+            
+    def __repr__(self):
+        return "CmdFailed(**%s)" % self.args
+    
+class ResultPostFailed(WfExn):
+    def __init__(self, sender=None, result=None, **args):
+        super(JobNotReady, self).__init__(**args)
+            
+    def __repr__(self):
+        return "ResultPostFailed(**%s)" % self.args
+
 
     
     
