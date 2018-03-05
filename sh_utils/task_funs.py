@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Author:  Venkatesh Choppella <venkatesh.choppell@iiit.ac.in>
+# Author:  Venkatesh Choppella <venkatesh.choppella@iiit.ac.in>
 # Licence: GPL v3.0
 
 # Additional Path utilities
