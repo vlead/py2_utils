@@ -33,6 +33,6 @@ def strip_exts(p, le):
             return p.rstrip(e)
     return p
             
-def url_strip_targz(url):
+def url_leaf_strip_targz(url):
     p = url_leaf(url)
     return strip_exts(p, ['.tar.gz', '.tgz', '.tar'])

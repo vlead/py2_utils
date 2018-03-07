@@ -157,9 +157,23 @@ def emacs_ver(p):
     ver_num = int(full_ver_str.rsplit('.')[0])
     return ver_num
 
+# https://stackoverflow.com/questions/3764291/checking-network-connection
+try:
+    import httplib
+except:
+    import http.client as httplib
 
-
-
+def have_internet():
+    conn = httplib.HTTPConnection("www.google.com", timeout=5)
+    try:
+        conn.request("HEAD", "/")
+        conn.close()
+        return True
+    except:
+        conn.close()
+        return False
+    
+    
 task_funs_catalog =  {"clone_repo": clone_repo, \
                        "pull_repo": pull_repo, \
                        "install_repo": install_repo, \

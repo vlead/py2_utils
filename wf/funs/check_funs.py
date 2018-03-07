@@ -33,6 +33,7 @@ def run_job_cmd(cls, job, s, **args):
                    cmd=s, output=ans, \
                    **args)
     except Exception as e:
+        print e
         raise CmdFailed(sender=cls, job=job,  \
                    cmd=s, exn=e, **args)
 
