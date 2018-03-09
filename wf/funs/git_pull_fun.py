@@ -30,7 +30,7 @@ class GitPullFun():
         check_admissible(GitPullFun, job)
         check_pre(GitPullFun, job)
         if have_internet():
-            s = format("cd %s; git pull %s " \
+            s = format("cd %s; git pull %s origin master " \
                        % (job.wd, job.git_opts))
             return run_job_cmd(GitPullFun, job, s, ws_dir=job.wd)
         else:
