@@ -12,16 +12,18 @@ from url_utils.url_fns import url_leaf_strip_targz
 
 
 class TargzInstallJob(Job):
-    def __init__(self, sender=None, wd=None, http_proxy=None, \
-                 https_proxy=None, url=None, **args):
+    def __init__(self, sender=None, wd=None, http_proxy="", \
+                 https_proxy="", url=None, **args):
         # 1. wd is a path
         check_path(wd)
         # 2. url is an http url
         check_http_tar_gz(url)
 
         ws_targz = url_leaf(url)
+        print "ws_targz = %s" % ws_targz
         # https://org-mode.org/org-8.2.10.tar.gz => org-8.2.10
         ws_name = url_leaf_strip_targz(url)
+        print "ws_name = %s" % ws_name
         ws_dir = os.path.join(wd, ws_name)
         
         super(TargzInstallJob, self).__init__(sender=sender, \

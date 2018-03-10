@@ -27,11 +27,22 @@ def url_leaf_sans_exts(url):
     p = url_leaf(url)
     return sans_exts(p)
 
+import re
 def strip_exts(p, le):
     for e in le:
         if p.endswith(e):
-            return p.rstrip(e)
+            return strip_suffix(p, e)
     return p
+
+
+# https://stackoverflow.com/questions/1038824/how-do-i-remove-a-substring-from-the-end-of-a-string-in-python
+def strip_suffix(text, suffix):
+    if len(suffix) == 0:
+        return text
+    if text.endswith(suffix):
+        return text[:-len(suffix)]
+    return text
+
             
 def url_leaf_strip_targz(url):
     p = url_leaf(url)
