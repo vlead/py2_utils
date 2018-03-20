@@ -36,7 +36,11 @@ class SymLinkFun():
         
         wd_abspath=os.path.abspath(job.wd)
         dest_abspath=os.path.abspath(job.dest)
+        print "wd_abspath = %s" % wd_abspath
+        print "dest_abspath = %s" % dest_abspath
         rp = os.path.relpath(dest_abspath, wd_abspath)
+        print "rp = %s" % rp
+        
         s = "cd %s; ln -sf %s %s" % (wd_abspath, rp, job.link)
         print "s = %s" % s  
         return run_job_cmd(SymLinkFun, job, s, rpath=rp)
